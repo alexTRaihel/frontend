@@ -1,11 +1,13 @@
 <template>
     <div class="services">
-        <h3>Services</h3>
         <div class="services-form">
             <services-form></services-form>
         </div>
         <div class="services-list">
             <services-list></services-list>
+        </div>
+        <div v-if="service" class="service-info">
+            {{service}}}
         </div>
     </div>
 </template>
@@ -14,10 +16,32 @@
 
     import ServicesList from "../components/services/ServiceList.vue";
     import ServicesForm from "../components/services/ServiceForm.vue";
+    import servicesApi from '../api/services';
 
     export default {
+        props:["id"],
         name: "Services",
-        components:{ServicesList,ServicesForm}
+        data(){
+            return{
+                service: null
+            }
+        },
+        created(){
+
+          let that = this;
+
+          if (this.id){
+               servicesApi.getById(this.id).then(result=>{
+                  if (result.ok){
+                      that.service = result.body;
+                  }
+              });
+          }
+        },
+        components:{ServicesList,ServicesForm},
+        methods: {
+
+        }
     }
 </script>
 

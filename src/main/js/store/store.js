@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import profileApi from '../api/profile';
 import stationsApi from '../api/stations';
 import servicesApi from '../api/services';
+import profileModule from './profile-module';
 
 Vue.use(Vuex);
 
@@ -50,6 +51,12 @@ export default new Vuex.Store({
         updateProfileMutation(state, profile){
             state.profile = profile
         },
+        addVehicleMutation(state, vehicle){
+            state.profile.vehicles = [
+                ...state.profile.vehicles,
+                vehicle
+            ]
+        },
         updateStationsMutation(state, stations){
             state.stations = stations;
         },
@@ -71,6 +78,15 @@ export default new Vuex.Store({
             const result =  await profileApi.updateProfile(profile);
             const data = await result.json();
             commit('updateProfileMutation', data);
+        },
+        addVehicleAction({commit,state}, vehicle){
+            profileApi.addVehicleByOwnerId(vehicle, state.profile.id)
+                .then(result=>{
+                    if (result.ok){
+                        commit('addVehicleMutation', result.body);
+                        console.log(result.body);
+                    }
+                });
         },
         loadProfileById({commit}, id) {
             profileApi.getProfileById(id).then(result => {
@@ -99,21 +115,26 @@ export default new Vuex.Store({
                 });
         },
         searchObjectsByParams({commit}, params) {
-           stationsApi.getNear(params.latitude, params.longitude, params.radius).then(result=>{
-               if (result.ok) {
-                   commit('updateStationsMutation', result.body);
-               } else {
-                   console.log(result.status);
-               }
-            });
+           stationsApi.getNear(params.latitude, params.longitude, params.radius)
+               .then(result=>{
+                    if (result.ok) {
+                        commit('updateStationsMutation', result.body);
+                    } else {
+                        console.log(result.status);
+                    }
+               });
             servicesApi.getAll()
-                .then(result=>{
+               .then(result=>{
                     if (result.ok){
                         commit('loadServicesMutation', result.body);
                     } else {
                         console.log(result.status);
                     }
-                });
+               });
         }
+    },
+
+    modules: {
+        profileModule,
     }
 })

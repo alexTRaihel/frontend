@@ -1,13 +1,18 @@
 <template>
-    <div>
-        <div>Vehicle</div>
-        <div>{{profile.username}}</div>
-        <div v-if="profile && profile.vehicles">
-            <ul v-for="vehicle in profile.vehicles">
-                <li>
-                    {{vehicle.model}}
-                </li>
-            </ul>
+    <div class="profile">
+        <div v-if="profile">
+            <div>{{profile.username}}</div>
+            <div v-if="profile && profile.vehicles">
+                <ul v-for="vehicle in profile.vehicles">
+                    <li>
+                        {{vehicle.model}}
+                    </li>
+                </ul>
+            </div>
+            <div v-if="profile">
+                <vehicle-form
+                ></vehicle-form>
+            </div>
         </div>
     </div>
 </template>
@@ -15,6 +20,7 @@
 <script>
 
     import { mapActions, mapGetters, mapMutations } from 'vuex'
+    import VehicleForm from "../vehicle/VehicleForm.vue";
 
     export default {
         data() {
@@ -22,7 +28,8 @@
                 usr: ""
             }
         },
-        mounted() {
+        components:{VehicleForm},
+        created() {
             this.setLoading(true);
             this.loadProfileById("1");
         },

@@ -1,41 +1,24 @@
 <template>
-    <div>
-        <h3>Profile</h3>
-        <div>{{profile.username}}</div>
-        <div v-if="profile && profile.vehicles">
-            <ul v-for="vehicle in profile.vehicles">
-                <li>
-                    {{vehicle.model}}
-                </li>
-            </ul>
-        </div>
+    <div class="profile-page">
+        <profile-component></profile-component>
+        <login-component></login-component>
     </div>
 </template>
 
 <script>
 
     import { mapActions, mapGetters, mapMutations } from 'vuex'
+    import ProfileComponent from "../components/profile/main/Profile.vue";
+    import LoginComponent from "../components/profile/login/Login.vue";
 
     export default {
-        data() {
-            return {
-                usr: ""
-            }
-        },
-        mounted() {
-            this.setLoading(true);
-            this.loadProfileById("1");
-        },
+        components:{ProfileComponent,LoginComponent},
         computed: mapGetters(['profile','loading']),
         methods: {
             ...mapActions([
-                'updateProfileAction',
                 'loadProfileById']),
             ...mapMutations([
                 'setLoading']),
-            update(){
-                this.updateProfileAction(this.usr);
-            }
         }
     }
 </script>

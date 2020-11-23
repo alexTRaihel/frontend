@@ -7,5 +7,5 @@ export default {
     getProfileById: id => profiles.get({id: id}),
     addProfile: profile => profiles.save({}, profile),
     updateProfile: profile => profiles.update({id: profile.id}, profile),
-    addVehicleByOwnerId: vehicle => vehicles.save({id: id}, vehicle)
+    addVehicleByOwnerId: (vehicle, id) => vehicles.save({id: id}, vehicle)
 }

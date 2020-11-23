@@ -2,8 +2,7 @@
     <div class="services-list">
         <div class="services-list_cards" v-if="services && services.length > 0" v-for="service in services" :key="service.id">
             <div class="card-item">
-                <span>{{service.name}}</span>
-                <span>{{service.address}}</span>
+                {{service}}
             </div>
         </div>
     </div>

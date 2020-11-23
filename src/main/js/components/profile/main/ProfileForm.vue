@@ -4,7 +4,7 @@
 
 <script>
     export default {
-        name: "VehicleForm"
+        name: "ProfilePage"
     }
 </script>
 

@@ -2,6 +2,8 @@
     <div class="services-form">
             <div>
                 <input type="text" placeholder="name" v-model="name">
+                <br/>
+                <textarea placeholder="description" v-model="description"></textarea>
             </div>
             <div>
                <input type="radio" id="searchType" value="searchType" v-model="type">
@@ -71,7 +73,8 @@
                 selected: "",
                 region: null,
                 city: null,
-                type: "searchType"
+                type: "searchType",
+                description: ""
             }
         },
         components: {AddressSearchForm},
@@ -92,7 +95,8 @@
                     access: this.access,
                     latitude: this.latitude,
                     longitude: this.longitude,
-                    city: this.city ? this.city.id : null
+                    location_id: this.city ? this.city.id : null,
+                    description: this.description
                 };
 
                 this.addServiceAction(service);

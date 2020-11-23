@@ -84,7 +84,7 @@
             init(){
                 this.map = new ymaps.Map("map", {
                     center: [53.9, 27.56],
-                    zoom: 12
+                    zoom: 7
                 });
 
                 this.map.controls.remove("routeEditor");

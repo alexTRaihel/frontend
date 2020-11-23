@@ -9,6 +9,7 @@ module.exports = {
     devServer: {
         contentBase: './dist',
         compress: true,
+        historyApiFallback: true,
         port: 8000,
         stats: 'errors-only',
         clientLogLevel: 'error'

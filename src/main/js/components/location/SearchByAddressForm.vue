@@ -236,7 +236,7 @@
     .input {
         height: 18px;
         margin-right: 10px;
-        width: 277px;
+        width: 240px;
         padding: 4px;
         border: 1px solid #999;
         border-radius: 3px;

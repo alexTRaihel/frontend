@@ -4,6 +4,9 @@
             <div class="card-item">
                 {{service}}
             </div>
+            <v-btn @click="open(service.id)">open</v-btn>
+            <v-btn @click="update(service)">update</v-btn>
+            <v-btn @click="remove(service.id)">remove</v-btn>
         </div>
     </div>
 </template>
@@ -23,7 +26,17 @@
         computed: mapGetters(['services']),
         methods: {
             ...mapActions([
-                'loadServicesAction']),
+                'loadServicesAction',
+                'removeServiceAction']),
+            update(service){
+                console.log('implement update data');
+            },
+            remove(id){
+                this.removeServiceAction(id);
+            },
+            open(id){
+
+            }
         }
     }
 </script>

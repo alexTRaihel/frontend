@@ -4,19 +4,21 @@ import profileApi from '../api/profile';
 import stationsApi from '../api/stations';
 import servicesApi from '../api/services';
 import profileModule from './profile-module';
+import serviceModule from './services-module';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
         stations: [],
-        services: [],
         profile: null,
         loading: false,
         locations: [
             {
                 "id" : 4,
                 "name" : "Гродненская область",
+                "latitude" : 53.67785,
+                "longitude": 23.829484,
                 "cities" : [
                     {
                         "name" : "Гродно",
@@ -30,11 +32,13 @@ export default new Vuex.Store({
             },
             {
                 "id" : 5,
-                "name" : "Минск",
+                "name" : "Минская область",
+                "latitude" : 53.893009,
+                "longitude": 27.567444,
                 "cities" : [
                     {
                         "name" : "Минск",
-                        "id" : 7000
+                        "id" : 5001
                     }
                 ]
             }
@@ -44,7 +48,6 @@ export default new Vuex.Store({
         profile: state => state.profile,
         loading: state => state.loading,
         stations: state => state.stations,
-        services: state => state.services,
         locations: state => state.locations
     },
     mutations: {
@@ -59,15 +62,6 @@ export default new Vuex.Store({
         },
         updateStationsMutation(state, stations){
             state.stations = stations;
-        },
-        loadServicesMutation(state, services){
-            state.services = services;
-        },
-        addServicesMutation(state, service){
-            state.services = [
-                ...state.services,
-                service
-            ]
         },
         setLoading(state, val){
             state.loading = val;
@@ -96,24 +90,6 @@ export default new Vuex.Store({
                 }
             });
         },
-        loadServicesAction({commit}) {
-            servicesApi.getAll()
-                .then(result=>{
-                    if (result.ok){
-                        commit('loadServicesMutation', result.body);
-                    } else {
-                        console.log(result.status);
-                    }
-                });
-        },
-        addServiceAction({commit}, service) {
-            servicesApi.add(service)
-                .then(result=>{
-                    if (result.ok){
-                        commit('addServicesMutation', result.body);
-                    }
-                });
-        },
         searchObjectsByParams({commit}, params) {
            stationsApi.getNear(params.latitude, params.longitude, params.radius)
                .then(result=>{
@@ -136,5 +112,6 @@ export default new Vuex.Store({
 
     modules: {
         profileModule,
+        serviceModule
     }
 })

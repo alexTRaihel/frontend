@@ -1,13 +1,14 @@
 <template>
     <div class="services">
+        <div>
+            <input type="radio" id="servicesList" value="ServicesList" v-model="servComponent">
+            <label for="servicesList">ServicesList</label>
+            <br>
+            <input type="radio" id="servicesForm" value="ServicesForm" v-model="servComponent">
+            <label for="servicesForm">ServicesForm</label>
+        </div>
         <div class="services-form">
-            <services-form></services-form>
-        </div>
-        <div class="services-list">
-            <services-list></services-list>
-        </div>
-        <div v-if="service" class="service-info">
-            {{service}}}
+            <component :is="servComponent"></component>
         </div>
     </div>
 </template>
@@ -23,7 +24,8 @@
         name: "Services",
         data(){
             return{
-                service: null
+                service: null,
+                servComponent: ServicesList
             }
         },
         created(){
@@ -48,5 +50,20 @@
 <style scoped>
     .services{
         display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .services-form {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .services-list{
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        margin-top: 20px;
     }
 </style>

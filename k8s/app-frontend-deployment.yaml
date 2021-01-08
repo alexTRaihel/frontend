@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-frontend
+spec:
+  replicas: 2
+  minReadySeconds: 15
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: app-frontend
+    spec:
+      containers:
+        - image: msapp/app-frontend
+          imagePullPolicy: Always
+          name: app-frontend
+          env:
+            - name: GATAWAY_API_URL
+              value: "http://gataway"
+          ports:
+            - containerPort: 80

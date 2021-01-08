@@ -1,59 +1,63 @@
 <template>
     <div class="services-form">
-            <div>
-                <input type="text" placeholder="name" v-model="name">
-                <br/>
-                <textarea placeholder="description" v-model="description"></textarea>
-            </div>
-            <div>
-               <input type="radio" id="searchType" value="searchType" v-model="type">
-               <label for="searchType">Search type</label>
-               <br>
-               <input type="radio" id="manualType" value="manualType" v-model="type">
-               <label for="manualType">Manual type</label>
-            </div>
-            <div class="services-form_address">
-                <div class="address_search-type">
-                        <address-search-form
-                                :updateCoordinates="updateCoordinates"
-                                :disabled="isManualType"
-                        ></address-search-form>
-                </div>
-                <div class="address_manual-type">
-                    <input :disabled="!isManualType" type="text" placeholder="address" v-model="address">
-                    <br/>
-                    <input :disabled="!isManualType" type="number" placeholder="latitude" v-model="latitude">
-                    <br/>
-                    <input :disabled="!isManualType" type="number" placeholder="longitude" v-model="longitude">
-                    <br/>
-                    <select :disabled="!isManualType" v-model="region">
-                        <template v-if="locations">
-                            <option v-for="item in locations" :value="item" :key="item.id">
-                                {{ item.name }}
-                            </option>
-                        </template>
-                    </select>
-                    <br/>
-                    <select :disabled="region == null || !isManualType" v-model="city">
-                       <template v-if="region">
-                          <option v-for="item in region.cities" :value="item" :key="item.id">
-                                  {{ item.name }}
-                          </option>
-                       </template>
-                    </select>
-                </div>
-            </div>
-            <div>
-                <input type="checkbox" placeholder="access" id="access" value="1" v-model="access">
-                <label for="access">Access</label>
-            </div>
-            <div class="services-form_save-button">
-                <button @click="addService">Add</button>
-            </div>
-            <div class="info">
-                <div>{{region}}</div>
-                <div>{{city}}</div>
-            </div>
+       <div>
+           <input type="text" placeholder="name" v-model="name">
+           <br/>
+           <textarea placeholder="description" v-model="description"></textarea>
+       </div>
+       <div>
+          <input type="radio" id="searchType" value="searchType" v-model="type">
+          <label for="searchType">Search type</label>
+          <br>
+          <input type="radio" id="manualType" value="manualType" v-model="type">
+          <label for="manualType">Manual type</label>
+       </div>
+       <div class="services-form_address">
+           <div class="address_search-type">
+                   <address-search-form
+                           :updateCoordinates="updateCoordinates"
+                           :disabled="isManualType"
+                   ></address-search-form>
+           </div>
+           <div class="address_manual-type">
+               <input :disabled="!isManualType" type="text" placeholder="address" v-model="address">
+               <br/>
+               <input :disabled="!isManualType" type="number" placeholder="latitude" v-model="latitude">
+               <br/>
+               <input :disabled="!isManualType" type="number" placeholder="longitude" v-model="longitude">
+               <br/>
+               <select :disabled="!isManualType" v-model="region">
+                   <template v-if="locations">
+                       <option v-for="item in locations" :value="item" :key="item.id">
+                           {{ item.name }}
+                       </option>
+                   </template>
+               </select>
+               <br/>
+               <select :disabled="region == null || !isManualType" v-model="city">
+                  <template v-if="region">
+                     <option v-for="item in region.cities" :value="item" :key="item.id">
+                             {{ item.name }}
+                     </option>
+                  </template>
+               </select>
+           </div>
+       </div>
+       <div>
+           <input type="checkbox" placeholder="access" id="access" value="1" v-model="access">
+           <label for="access">Access</label>
+       </div>
+       <div>
+           <input type="checkbox" placeholder="evacuation" id="evacuation" value="0" v-model="evacuation">
+           <label for="evacuation">Evacuation</label>
+       </div>
+       <div class="services-form_save-button">
+           <button @click="addService">Add</button>
+       </div>
+       <div class="info">
+           <div>{{region}}</div>
+           <div>{{city}}</div>
+       </div>
     </div>
 </template>
 
@@ -61,6 +65,7 @@
 
     import { mapActions,mapGetters } from 'vuex';
     import AddressSearchForm from '../location/SearchByAddressForm.vue';
+    import loctionApi from '../../api/location';
 
     export default {
         data(){
@@ -74,7 +79,10 @@
                 region: null,
                 city: null,
                 type: "searchType",
-                description: ""
+                description: "",
+                evacuation: "",
+                regionId: null,
+                cityId: null,
             }
         },
         components: {AddressSearchForm},
@@ -87,7 +95,8 @@
         methods: {
             ...mapActions([
                 'loadServicesAction',
-                'addServiceAction']),
+                'addServiceAction',
+                'updateServiceAction']),
             addService(){
                 let service = {
                     name: this.name,
@@ -95,8 +104,10 @@
                     access: this.access,
                     latitude: this.latitude,
                     longitude: this.longitude,
-                    location_id: this.city ? this.city.id : null,
-                    description: this.description
+                    regionId: this.regionId,
+                    cityId: this.cityId,
+                    description: this.description,
+                    evacuation: this.evacuation
                 };
 
                 this.addServiceAction(service);
@@ -110,6 +121,12 @@
                         this.region = administrativeAreas;
                         this.city = administrativeAreas.cities.find(city => city.name.toUpperCase() === data.locality.toUpperCase())
                 }
+
+                let locationsInfo = loctionApi.getLocationInfo(this.region, this.city);
+
+                this.regionId = locationsInfo.regionId;
+                this.cityId = locationsInfo.cityId;
+
                 this.address = data.addressLine;
             }
         }

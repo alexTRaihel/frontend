@@ -1,5 +1,6 @@
 <template>
     <div class="profile">
+        <h3>Profile: {{usr ? usr : 1}}</h3>
         <div v-if="profile">
             <div>{{profile.username}}</div>
             <div v-if="profile && profile.vehicles">
@@ -8,7 +9,8 @@
                         {{vehicle.model}}
                     </li>
                 </ul>
-            </div>
+                <button @click="findService(profile.vehicles[0])">Find service</button>
+            </div >
             <div v-if="profile">
                 <vehicle-form
                 ></vehicle-form>
@@ -42,6 +44,9 @@
                 'setLoading']),
             update(){
                 this.updateProfileAction(this.usr);
+            },
+            findService(model){
+                console.log(model);
             }
         }
     }

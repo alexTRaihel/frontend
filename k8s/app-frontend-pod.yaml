@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app-frontend
+  labels:
+    app: app-frontend
+spec:
+  containers:
+    - image: msapp/app-frontend
+      name: app-frontend
+      env:
+          - name: GATAWAY_API_URL
+            value: "http://gataway"
+      ports:
+        - containerPort: 80

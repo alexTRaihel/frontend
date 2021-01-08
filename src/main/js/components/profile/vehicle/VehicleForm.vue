@@ -1,7 +1,7 @@
 <template>
     <div class="vehicle-form">
         <input type="text" placeholder="name" v-model="model">
-        <button @click="saveVehicle">Save</button>
+        <button @click="saveVehicle">Add</button>
     </div>
 </template>
 

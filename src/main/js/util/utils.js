@@ -20,3 +20,26 @@ export function getCookie(name) {
 export function eraseCookie(name) {
     document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
+
+export function parseLocationByName(locations, regionName, cityName) {
+
+    let regionId = 0;
+    let cityId = 0;
+
+    locations.forEach((item)=>{
+        console.log(item);
+        if (item.name == regionName){
+            regionId = item.id;
+            item.cities.forEach((item)=>{
+                if (item.name == cityName) {
+                    cityId == item.id;
+                }
+            });
+        }
+    });
+
+    return {
+        regionId: regionId,
+        cityId: cityId
+    }
+}

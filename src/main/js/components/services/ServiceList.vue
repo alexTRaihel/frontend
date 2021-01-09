@@ -35,7 +35,7 @@
                 this.removeServiceAction(id);
             },
             open(id){
-
+                console.log(id + "opening")
             }
         }
     }

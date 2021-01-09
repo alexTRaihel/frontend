@@ -122,7 +122,7 @@
                         this.city = administrativeAreas.cities.find(city => city.name.toUpperCase() === data.locality.toUpperCase())
                 }
 
-                let locationsInfo = loctionApi.getLocationInfo(this.region, this.city);
+                let locationsInfo = loctionApi.getRegionIdentity(this.region, this.city);
 
                 this.regionId = locationsInfo.regionId;
                 this.cityId = locationsInfo.cityId;

@@ -14,19 +14,32 @@
 
 <script>
 
-
+    import {mapMutations} from 'vuex'
+    import locationApi from './api/location'
 
     export default {
         data() {
             return {
             }
         },
-        mounted() {
+        created() {
+            locationApi.getAllRegionsInfo().then(
+               result=> {
+                   if (result.ok) {
+                       this.setLocations(result.body)
+                   } else {
+                       console.log(result.status);
+                   }
+               }
+            );
+
         },
         beforeMount() {
            //this.$router.replace('/profile')
         },
         methods: {
+            ...mapMutations([
+                'setLocations']),
             showPage(page){
                 this.$router.push(page);
             }
